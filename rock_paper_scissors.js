@@ -42,7 +42,7 @@ function playRound(playerSelection, computerSelection){
   let lose = "LOSE"
   let tie = "TIE";
 
-  let invalid = "INVALID Please type in one of the three: ROCK, PAPER, SCISSOR";
+  let invalid = "INVALID";
 
   if (computerSelection == rock){
     switch(playerSelection){
@@ -84,7 +84,7 @@ function playRound(playerSelection, computerSelection){
   }
 }
 
-function oneRound(){
+function oneRoundGame(){
   /**
    * One round of game play of Rock Paper and Scissors
    */
@@ -96,7 +96,7 @@ function oneRound(){
   
   if (result != "WIN" && result != "LOSE" && result != "TIE"){
     console.log("This does not count. Let's play one more time!");
-    return oneRound();
+    return oneRoundGame();
   }
 
   console.log(`Result (You VS computer): ${result}`);
@@ -108,22 +108,46 @@ function oneRound(){
   }
 }
 
-function game(num_rounds=5){
+function playGame(num_rounds){
+  /**
+   * Execute the number of games
+   * Count the scores of each game round
+   */
   if (num_rounds == 0){
     return 0;
   }
-  return oneRound() + game(num_rounds-1);
+  return oneRoundGame() + playGame(num_rounds-1);
 }
 
+function verifyNumber(input){
+  /**
+   * Verify whether the input is a valid number
+   */
+  let input_num = parseInt(input);
+  //console.log(`${typeof input_num}`);
+  //console.log(`${input_num}`);
+  if (Number.isNaN(input_num)){ return true; }
+  return false;
+}
 
-// Play 5 games and output user score
-score = game(5);
-console.log(`Your score is ${score}`)
+function getUserInfo(){
+  /**
+   * Get the number of games that the user wants to play
+   * Then execute the number of games that he wants to play
+   */
+  let input = prompt("How many games would you like to play? Please enter a valid number.");
 
+  if (verifyNumber(input)){
+    console.log("Invalid number");
+    return getUserInfo();
+  }
+  score = playGame(input);
+  console.log(`Your score is ${score}`);
+  return;
+}
 
-
-
-
+// Start Game
+getUserInfo();
 
 
 
